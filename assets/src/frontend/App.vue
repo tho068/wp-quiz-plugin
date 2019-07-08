@@ -10,5 +10,8 @@ export default {
 </script>
 
 <style>
-
+.quiz-button {
+  margin-top: 25px !important;
+  margin-bottom: 25px !important;
+}
 </style>

@@ -1,17 +1,16 @@
 <template lang="pug">
   #completed(v-if="score")
     h4 Ditt resultat
-    p Du har svart korrekt på {{ numCorrect }} av totalt {{ totalQuestions }} spørsmål
+    p Du har svart korrekt på {{ numCorrect }} av {{ totalQuestions }} spørsmål
     .chart-wrapper
       .chart-container
         h4 Din score VS gjenomsnittet
         canvas(ref="chart-average")#average-chart
-
       .chart-container
         h4 Din fremgang
         canvas(ref="chart-progress")#average-chart
-
-    button.restart-button(@click="restart()") Start på nytt
+    button.quiz-button.result-buttons(@click="restart()") Start på nytt
+    button.quiz-button.result-buttons(@click="overview()") Oversikt
 </template>
 
 <script>
@@ -41,6 +40,7 @@ export default {
     restart() {
       this.$router.push({ name: "Quiz" });
     },
+    overview() {},
     storeAttempt() {
       return new Promise(async (Resolve, Reject) => {
         try {
@@ -51,10 +51,8 @@ export default {
               quizId
             }
           );
-
           this.attempts = earlierAttempts.data.attempts;
           this.average = earlierAttempts.data.average;
-
           Resolve();
         } catch (e) {
           Reject(e);
@@ -87,7 +85,7 @@ export default {
       const chart = new Chart(ctx, {
         type: "horizontalBar",
         data: {
-          labels: ["Din score", "Gjennomsnittelig score"],
+          labels: ["Din score", "Gjennomsnitt"],
           datasets: [
             {
               label: "Din score VS gjenomsnittet",
@@ -164,6 +162,7 @@ export default {
     numAverage() {
       return this.average;
     },
+    /* Return attempt labels */
     attemptLabels() {
       let labels = [];
       for (let i = 0; i < this.attempts.length; i++) {
@@ -171,6 +170,7 @@ export default {
       }
       return labels;
     },
+    /* Return attempt score */
     attemptScore() {
       let score = [];
       for (let i = 0; i < this.attempts.length; i++) {
@@ -201,14 +201,14 @@ export default {
 }
 .chart-container h4 {
   padding-top: 0;
-  padding-bottom: 25px;
+  padding-bottom: 15px;
   margin-bottom: 0;
   margin-top: 0;
 }
 #average-chart {
   margin: 0 auto;
 }
-.restart-button {
-  margin-top: 25px;
+.result-buttons {
+  float: left;
 }
 </style>

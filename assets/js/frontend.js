@@ -13,42 +13,39 @@ pluginWebpack([0],{
 //
 //
 //
-//
-//
-
 
 
 
 /* harmony default export */ __webpack_exports__["a"] = ({
-    name: 'Quiz',
-    data() {
-        return {
-            currentQuiz: null
-        };
+  name: "Quiz",
+  data() {
+    return {
+      currentQuiz: null
+    };
+  },
+  async mounted() {
+    this.loadQuiz();
+  },
+  methods: {
+    async loadQuiz() {
+      try {
+        let quiz = await __WEBPACK_IMPORTED_MODULE_0__api_js___default.a.get(`/quiz/${quizId}`);
+        this.currentQuiz = quiz.data;
+      } catch (e) {
+        console.log(e);
+      }
     },
-    async mounted() {
-        this.loadQuiz();
-    },
-    methods: {
-        async loadQuiz() {
-            try {
-                let quiz = await __WEBPACK_IMPORTED_MODULE_0__api_js___default.a.get(`/quiz/${quizId}`);
-                this.currentQuiz = quiz.data;
-            } catch (e) {
-                console.log(e);
-            }
-        },
-        startQuiz() {
-            this.$router.push({
-                name: 'Questions'
-            });
-        }
-    },
-    computed: {
-        quiz() {
-            return this.currentQuiz;
-        }
+    startQuiz() {
+      this.$router.push({
+        name: "Questions"
+      });
     }
+  },
+  computed: {
+    quiz() {
+      return this.currentQuiz;
+    }
+  }
 });
 
 /***/ }),
@@ -308,10 +305,11 @@ var render = function() {
   return _vm.quiz != null
     ? _c("div", { attrs: { id: "home" } }, [
         _c("h3", [_vm._v(_vm._s(_vm.quiz.title))]),
-        _c("div", [_vm._v(_vm._s(_vm.quiz.description))]),
+        _c("p", [_vm._v(_vm._s(_vm.quiz.description))]),
         _c(
           "button",
           {
+            staticClass: "quiz-button",
             on: {
               click: function($event) {
                 return _vm.startQuiz()
@@ -415,6 +413,14 @@ var render = function() {
           _c("h3", { staticClass: "question-text" }, [
             _vm._v(_vm._s(_vm.currentQuestion.text))
           ]),
+          _c("p", { staticClass: "question-index" }, [
+            _vm._v(
+              "Spørsmål " +
+                _vm._s(_vm.currentQuestionNumber) +
+                " av " +
+                _vm._s(_vm.numberOfQuestions)
+            )
+          ]),
           _c("div", { staticClass: "opt-and-image-container" }, [
             _c(
               "div",
@@ -449,6 +455,7 @@ var render = function() {
             ? _c(
                 "button",
                 {
+                  staticClass: "quiz-button",
                   on: {
                     click: function($event) {
                       return _vm.next()
@@ -462,6 +469,7 @@ var render = function() {
             ? _c(
                 "button",
                 {
+                  staticClass: "quiz-button",
                   on: {
                     click: function($event) {
                       return _vm.finish()
@@ -568,7 +576,7 @@ var render = function() {
           _vm._v(
             "Du har svart korrekt på " +
               _vm._s(_vm.numCorrect) +
-              " av totalt " +
+              " av " +
               _vm._s(_vm.totalQuestions) +
               " spørsmål"
           )
@@ -592,7 +600,7 @@ var render = function() {
         _c(
           "button",
           {
-            staticClass: "restart-button",
+            staticClass: "quiz-button result-buttons",
             on: {
               click: function($event) {
                 return _vm.restart()
@@ -600,6 +608,18 @@ var render = function() {
             }
           },
           [_vm._v("Start på nytt")]
+        ),
+        _c(
+          "button",
+          {
+            staticClass: "quiz-button result-buttons",
+            on: {
+              click: function($event) {
+                return _vm.overview()
+              }
+            }
+          },
+          [_vm._v("Oversikt")]
         )
       ])
     : _vm._e()
@@ -623,8 +643,6 @@ if (false) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_js__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__api_js__);
-//
-//
 //
 //
 //
@@ -730,6 +748,12 @@ if (false) {
     computed: {
         currentQuestion() {
             return this.questions[this.questionIndex];
+        },
+        numberOfQuestions() {
+            return this.questions.length;
+        },
+        currentQuestionNumber() {
+            return this.questionIndex + 1;
         }
     }
 });
@@ -746,7 +770,6 @@ if (false) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__api_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__api_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_q__ = __webpack_require__(186);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_q___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_q__);
-//
 //
 //
 //
@@ -789,6 +812,7 @@ if (false) {
     restart() {
       this.$router.push({ name: "Quiz" });
     },
+    overview() {},
     storeAttempt() {
       return new __WEBPACK_IMPORTED_MODULE_2_q__["Promise"](async (Resolve, Reject) => {
         try {
@@ -796,10 +820,8 @@ if (false) {
             score: this.numCorrect,
             quizId
           });
-
           this.attempts = earlierAttempts.data.attempts;
           this.average = earlierAttempts.data.average;
-
           Resolve();
         } catch (e) {
           Reject(e);
@@ -826,7 +848,7 @@ if (false) {
       const chart = new __WEBPACK_IMPORTED_MODULE_0_chart_js___default.a(ctx, {
         type: "horizontalBar",
         data: {
-          labels: ["Din score", "Gjennomsnittelig score"],
+          labels: ["Din score", "Gjennomsnitt"],
           datasets: [{
             label: "Din score VS gjenomsnittet",
             data: [this.numCorrect, this.numAverage],
@@ -873,6 +895,7 @@ if (false) {
     numAverage() {
       return this.average;
     },
+    /* Return attempt labels */
     attemptLabels() {
       let labels = [];
       for (let i = 0; i < this.attempts.length; i++) {
@@ -880,6 +903,7 @@ if (false) {
       }
       return labels;
     },
+    /* Return attempt score */
     attemptScore() {
       let score = [];
       for (let i = 0; i < this.attempts.length; i++) {

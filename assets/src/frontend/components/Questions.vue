@@ -2,7 +2,7 @@
     #questions-container
         .question(v-if="currentQuestion")
             h3.question-text {{ currentQuestion.text }}
-
+            p.question-index Spørsmål {{ currentQuestionNumber }} av {{ numberOfQuestions }}
             .opt-and-image-container
                 .options-container
                     button.option(
@@ -15,13 +15,11 @@
                     ) {{ opt.text }}
                 .image-container(v-if="currentQuestion.img.length > 0")
                     img(:src="currentQuestion.img")
-
-            button(
+            button.quiz-button(
                 v-if="!completed"
                 @click="next()"
             ) Neste
-
-            button(
+            button.quiz-button(
                 v-if="completed"
                 @click="finish()"
             ) Fullfør
@@ -106,6 +104,12 @@ export default {
     computed: {
         currentQuestion () {
             return this.questions[this.questionIndex]
+        },
+        numberOfQuestions () {
+            return this.questions.length
+        },
+        currentQuestionNumber () {
+            return this.questionIndex + 1
         }
     },
 };
@@ -115,6 +119,11 @@ export default {
 .question-text {
     text-align: center;
 }
+.question-index {
+    text-align: center;
+    margin-bottom: 30px !important;
+    margin-top: 10px;
+}
 .opt-and-image-container {
     display: flex;
     align-items: center;
@@ -123,12 +132,16 @@ export default {
 }
 .options-container {
     flex-grow: 1;
+    width: 50%;
 }
 .image-container {
+    flex-grow: 1;
+    width: 50%;
     padding-left: 25px;
 }
 .image-container img {
-    max-width: 100%;
+    height: 350px;
+    text-align: center;
     max-height: 350px;
 }
 .option {
