@@ -7,6 +7,7 @@ namespace App;
 class Admin {
 
     public function __construct() {
+        add_action('wp_head', [$this, 'add_nonce']);
         add_action( 'admin_menu', [ $this, 'admin_menu' ] );
     }
 
@@ -24,8 +25,10 @@ class Admin {
         $hook = add_menu_page( __( 'Vue App', 'textdomain' ), __( 'Vue App', 'textdomain' ), $capability, $slug, [ $this, 'plugin_page' ], 'dashicons-text' );
 
         if ( current_user_can( $capability ) ) {
-            $submenu[ $slug ][] = array( __( 'App', 'textdomain' ), $capability, 'admin.php?page=' . $slug . '#/' );
-            $submenu[ $slug ][] = array( __( 'Settings', 'textdomain' ), $capability, 'admin.php?page=' . $slug . '#/settings' );
+            $submenu[ $slug ][] = array( __( 'Quiz', 'textdomain' ), $capability, 'admin.php?page=' . $slug . '#/quiz' );
+            $submenu[ $slug ][] = array( __( 'Create Quiz', 'textdomain' ), $capability, 'admin.php?page=' . $slug . '#/quiz/create' );
+            $submenu[ $slug ][] = array( __( 'Questions', 'textdomain' ), $capability, 'admin.php?page=' . $slug . '#/questions' );
+            $submenu[ $slug ][] = array( __( 'Categories', 'textdomain' ), $capability, 'admin.php?page=' . $slug . '#/categories' );
         }
 
         add_action( 'load-' . $hook, [ $this, 'init_hooks'] );

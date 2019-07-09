@@ -8,19 +8,40 @@ class REST_API {
 
     /* Register routes with wordpress */
     public function register_routes () {
+        /* Get quiz meta */
         register_rest_route( 'wp-quiz-plugin', '/quiz/(?P<id>\d+)', array(
             'methods' => 'GET',
             'callback' => [$this, 'get_quiz'],
         ));
 
+        /* Get questions for quiz */
         register_rest_route( 'wp-quiz-plugin', '/quiz/(?P<id>\d+)/getQuestions', array(
             'methods' => 'GET',
             'callback' => [$this, 'get_questions'],
         ));
 
+        /* Store user attempt */
         register_rest_route( 'wp-quiz-plugin', '/quiz/(?P<id>\d+)/storeAttempt', array(
             'methods' => 'POST',
             'callback' => [$this, 'store_attempt'],
+        ));
+
+        /* Create new quiz */
+        register_rest_route( 'wp-quiz-plugin', '/admin/quiz', array(
+            'methods' => 'POST',
+            'callback' => [$this, 'create_quiz'],
+        ));
+
+        /* List all quizzes*/
+        register_rest_route( 'wp-quiz-plugin', '/admin/quiz', array(
+            'methods' => 'GET',
+            'callback' => [$this, 'list_all_quizzes'],
+        ));
+
+        /* Update a quiz */
+        register_rest_route( 'wp-quiz-plugin', '/admin/quiz', array(
+            'methods' => 'PUT',
+            'callback' => [$this, 'update_quiz'],
         ));
     }
 
@@ -114,6 +135,99 @@ class REST_API {
       
         return rest_ensure_response([
             'error' => 'Kunne ikke lagre forsøket, noe gikk galt',
+            'status' => 500
+        ]);
+    }
+
+    /* List all quizzes */
+    public function list_all_quizzes () {
+        global $wpdb;
+
+        if (is_user_logged_in() == false) {
+            return rest_ensure_response([
+                'error' => 'Ingen adgang',
+                'status' => 403
+            ]);
+        }
+
+        $quizzes = $wpdb->get_results("SELECT * FROM wp_quiz_plugin_quiz", "OBJECT");
+
+        return rest_ensure_response($quizzes);
+    }
+
+    /* Update a quiz */
+    public function update_quiz ($data) {
+        global $wpdb;
+
+        if (is_user_logged_in() == false) {
+            return rest_ensure_response([
+                'error' => 'Ingen adgang',
+                'status' => 403
+            ]);
+        }
+
+        $success = $wpdb->update( 
+            'wp_quiz_plugin_quiz', 
+            array( 
+                'title' => $data['quizName'],	
+                'description' => $data['quizDescription']	
+            ), 
+            array( 'ID' => $data['id'] ), 
+            array( 
+                '%s',	
+                '%s'
+            ), 
+            array( '%d' ) 
+        );
+
+        if ($success) {
+            return rest_ensure_response([
+                'message' => 'Quiz er lagret',
+                'status' => 200
+            ]);   
+        }
+
+        return rest_ensure_response([
+            'error' => 'Kunne ikke lagre quiz, noe gikk galt',
+            'status' => 500
+        ]);
+    }
+
+    /* Create a new quiz */
+    public function create_quiz ($data) {
+        global $wpdb;
+
+        if (is_user_logged_in() == false) {
+            return rest_ensure_response([
+                'error' => 'Ingen adgang',
+                'status' => 403
+            ]);
+        }
+
+        $quizName = $data['quizName'];
+        $quizDescription = $data['quizDescription'];
+
+        $success = $wpdb->insert(
+            'wp_quiz_plugin_quiz',
+            array(
+                'title' => $quizName,
+                'description' => $quizDescription
+            ),
+            array(
+                '%s',
+                '%s'
+            )
+        );
+
+        if ($success) {
+            return rest_ensure_response([
+                'message' => 'Quiz er lagret',
+                'status' => 200
+            ]);
+        }
+
+        return rest_ensure_response([
+            'error' => 'Kunne ikke lagre quiz, noe gikk galt',
             'status' => 500
         ]);
     }

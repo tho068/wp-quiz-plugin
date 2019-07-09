@@ -132,6 +132,74 @@ final class Base_Plugin {
         }
 
         update_option( 'baseplugin_version', BASEPLUGIN_VERSION );
+
+        $this->create_db_tables();
+    }
+
+    public function create_db_tables() {
+        global $wpdb;
+
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+        $charset_collate = $wpdb->get_charset_collate();
+
+        /* Attempts */
+        $attemptTable = "CREATE TABLE IF NOT EXISTS wp_quiz_plugin_attempts (
+            id int(11) NOT NULL AUTO_INCREMENT,
+            quiz_id int(11) NOT NULL,
+            user_id int(11) NOT NULL,
+            score int(11) NOT NULL,
+            time int(11) NOT NULL,
+            PRIMARY KEY (id)
+        ) $charset_collate;";
+
+        /* Categories */
+        $categoryTable = "CREATE TABLE IF NOT EXISTS wp_quiz_plugin_category (
+            id int(11) NOT NULL AUTO_INCREMENT,
+            name varchar(55) NOT NULL,
+            PRIMARY KEY (id)
+        ) $charset_collate;";
+
+        /* Options */
+        $optionsTable = "CREATE TABLE IF NOT EXISTS wp_quiz_plugin_options (
+            id int(11) NOT NULL AUTO_INCREMENT,
+            text text NOT NULL,
+            correct tinyint(1) NOT NULL,
+            question_id int(11) NOT NULL,
+            PRIMARY KEY (id)
+        ) $charset_collate;";
+
+        /* Questions */
+        $questionsTable = "CREATE TABLE IF NOT EXISTS wp_quiz_plugin_questions (
+            id int(11) NOT NULL AUTO_INCREMENT,
+            text text NOT NULL,
+            img varchar(500) NOT NULL,
+            PRIMARY KEY (id)
+        ) $charset_collate;";
+
+        /* Quiz */
+        $quizTable = "CREATE TABLE IF NOT EXISTS wp_quiz_plugin_quiz (
+            id int(11) NOT NULL AUTO_INCREMENT,
+            title varchar(55) NOT NULL,
+            description text NOT NULL,
+            num_questions int(11) NOT NULL,
+            PRIMARY KEY (id)
+        ) $charset_collate;";
+
+        /* Quiz Questions */
+        $quizQuestionsTable = "CREATE TABLE IF NOT EXISTS wp_quiz_plugin_quiz_questions (
+            id int(11) NOT NULL AUTO_INCREMENT,
+            question_id int(11) NOT NULL,
+            quiz_id int(11) NOT NULL,
+            PRIMARY KEY (id)
+        ) $charset_collate;";
+        
+        dbDelta($attemptTable);
+        dbDelta($categoryTable);
+        dbDelta($optionsTable);
+        dbDelta($questionsTable);
+        dbDelta($quizTable);
+        dbDelta($quizQuestionsTable);
     }
 
     /**
@@ -171,6 +239,22 @@ final class Base_Plugin {
         add_action( 'init', array( $this, 'init_classes' ) );
 
         add_action( 'init', array( $this, 'localization_setup' ) );
+
+        /* Add required nonce to frontend head */
+        add_action('wp_head', [$this, 'add_plugin_url_global']);
+        add_action('wp_head', [$this, 'add_nonce']);
+
+        /* Add required nonce to backend head */
+        add_action('admin_head', [$this, 'add_plugin_url_global']);
+        add_action('admin_head', [$this, 'add_nonce']);
+    }
+
+    public function add_plugin_url_global () {
+        echo '<script type="text/javascript">var ajaxurl = "' . get_rest_url(null, 'wp-quiz-plugin') . '";</script>';
+    }
+
+    public function add_nonce () {
+        echo '<script type="text/javascript">var wpQuizNonce = "' . wp_create_nonce( 'wp_rest' ) . '";</script>';
     }
 
     /**
