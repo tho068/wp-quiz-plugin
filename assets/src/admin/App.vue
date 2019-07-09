@@ -1,6 +1,6 @@
 <template>
     <div id="vue-backend-app">
-        <h1>Backend App</h1>
+        <h1>WP Quiz Plugin</h1>
 
         <router-view />
     </div>
@@ -13,5 +13,4 @@ export default {
 </script>
 
 <style>
-
 </style>

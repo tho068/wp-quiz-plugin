@@ -1,6 +1,6 @@
 pluginWebpack([0],{
 
-/***/ 150:
+/***/ 154:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -19,12 +19,13 @@ pluginWebpack([0],{
 
 /***/ }),
 
-/***/ 151:
+/***/ 155:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__api__);
+//
 //
 //
 //
@@ -73,7 +74,16 @@ pluginWebpack([0],{
         name: 'CreateQuiz'
       });
     },
-    deleteQuiz(quiz) {},
+    async deleteQuiz(quiz) {
+      try {
+        await __WEBPACK_IMPORTED_MODULE_0__api___default.a.post('/admin/quiz/delete', {
+          id: quiz.id
+        });
+        this.loadQuizzes();
+      } catch (e) {
+        console.log(e);
+      }
+    },
     edit(quiz) {
       this.$router.push({
         name: 'EditQuiz',
@@ -85,7 +95,7 @@ pluginWebpack([0],{
 
 /***/ }),
 
-/***/ 152:
+/***/ 156:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -107,12 +117,14 @@ pluginWebpack([0],{
 
 /***/ }),
 
-/***/ 153:
+/***/ 157:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__api__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ckeditor_ckeditor5_build_classic__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ckeditor_ckeditor5_build_classic___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__ckeditor_ckeditor5_build_classic__);
 //
 //
 //
@@ -131,6 +143,12 @@ pluginWebpack([0],{
 //
 //
 //
+//
+//
+//
+//
+//
+
 
 
 
@@ -139,7 +157,8 @@ pluginWebpack([0],{
   data() {
     return {
       quizName: "",
-      quizDescription: ""
+      quizDescription: "",
+      editor: __WEBPACK_IMPORTED_MODULE_1__ckeditor_ckeditor5_build_classic___default.a
     };
   },
   methods: {
@@ -164,12 +183,14 @@ pluginWebpack([0],{
 
 /***/ }),
 
-/***/ 154:
+/***/ 159:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__api__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ckeditor_ckeditor5_build_classic__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ckeditor_ckeditor5_build_classic___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__ckeditor_ckeditor5_build_classic__);
 //
 //
 //
@@ -188,6 +209,11 @@ pluginWebpack([0],{
 //
 //
 //
+//
+//
+//
+//
+
 
 
 
@@ -198,7 +224,8 @@ pluginWebpack([0],{
     return {
       id: "",
       quizName: "",
-      quizDescription: ""
+      quizDescription: "",
+      editor: __WEBPACK_IMPORTED_MODULE_1__ckeditor_ckeditor5_build_classic___default.a
     };
   },
   mounted() {
@@ -236,7 +263,7 @@ pluginWebpack([0],{
 
 /***/ }),
 
-/***/ 190:
+/***/ 202:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -246,19 +273,25 @@ var _vue = __webpack_require__(4);
 
 var _vue2 = _interopRequireDefault(_vue);
 
-var _App = __webpack_require__(191);
+var _App = __webpack_require__(203);
 
 var _App2 = _interopRequireDefault(_App);
 
-var _router = __webpack_require__(194);
+var _router = __webpack_require__(206);
 
 var _router2 = _interopRequireDefault(_router);
 
-var _adminMenuFix = __webpack_require__(207);
+var _adminMenuFix = __webpack_require__(219);
 
 var _adminMenuFix2 = _interopRequireDefault(_adminMenuFix);
 
+var _ckeditor5Vue = __webpack_require__(160);
+
+var _ckeditor5Vue2 = _interopRequireDefault(_ckeditor5Vue);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_vue2.default.use(_ckeditor5Vue2.default);
 
 _vue2.default.config.productionTip = false;
 
@@ -276,18 +309,18 @@ new _vue2.default({
 
 /***/ }),
 
-/***/ 191:
+/***/ 203:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__ = __webpack_require__(150);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_App_vue__ = __webpack_require__(154);
 /* empty harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_6bc4b6d8_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(193);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_6bc4b6d8_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_App_vue__ = __webpack_require__(205);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(192)
+  __webpack_require__(204)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
@@ -334,14 +367,14 @@ if (false) {(function () {
 
 /***/ }),
 
-/***/ 192:
+/***/ 204:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 193:
+/***/ 205:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -352,7 +385,7 @@ var render = function() {
   return _c(
     "div",
     { attrs: { id: "vue-backend-app" } },
-    [_c("h1", [_vm._v("Backend App")]), _vm._v(" "), _c("router-view")],
+    [_c("h1", [_vm._v("WP Quiz Plugin")]), _vm._v(" "), _c("router-view")],
     1
   )
 }
@@ -369,7 +402,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 194:
+/***/ 206:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -387,19 +420,19 @@ var _vueRouter = __webpack_require__(7);
 
 var _vueRouter2 = _interopRequireDefault(_vueRouter);
 
-var _Quiz = __webpack_require__(195);
+var _Quiz = __webpack_require__(207);
 
 var _Quiz2 = _interopRequireDefault(_Quiz);
 
-var _Questions = __webpack_require__(198);
+var _Questions = __webpack_require__(210);
 
 var _Questions2 = _interopRequireDefault(_Questions);
 
-var _CreateQuiz = __webpack_require__(201);
+var _CreateQuiz = __webpack_require__(213);
 
 var _CreateQuiz2 = _interopRequireDefault(_CreateQuiz);
 
-var _EditQuiz = __webpack_require__(204);
+var _EditQuiz = __webpack_require__(216);
 
 var _EditQuiz2 = _interopRequireDefault(_EditQuiz);
 
@@ -430,18 +463,18 @@ exports.default = new _vueRouter2.default({
 
 /***/ }),
 
-/***/ 195:
+/***/ 207:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Quiz_vue__ = __webpack_require__(151);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Quiz_vue__ = __webpack_require__(155);
 /* empty harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_28f67cb6_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_template_compiler_preprocessor_engine_pug_node_modules_vue_loader_lib_selector_type_template_index_0_Quiz_vue__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_28f67cb6_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_template_compiler_preprocessor_engine_pug_node_modules_vue_loader_lib_selector_type_template_index_0_Quiz_vue__ = __webpack_require__(209);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(196)
+  __webpack_require__(208)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
@@ -488,14 +521,14 @@ if (false) {(function () {
 
 /***/ }),
 
-/***/ 196:
+/***/ 208:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 197:
+/***/ 209:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -517,28 +550,32 @@ var render = function() {
                   _c("td", [_vm._v(_vm._s(quiz.title))]),
                   _c("td", [_vm._v(_vm._s(quiz.description))]),
                   _c("td", [
-                    _c(
-                      "button",
-                      {
-                        on: {
-                          click: function($event) {
-                            return _vm.edit(quiz)
+                    _c("div", { staticClass: "button-group" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "button-primary",
+                          on: {
+                            click: function($event) {
+                              return _vm.edit(quiz)
+                            }
                           }
-                        }
-                      },
-                      [_vm._v("Edit")]
-                    ),
-                    _c(
-                      "button",
-                      {
-                        on: {
-                          click: function($event) {
-                            return _vm.deleteQuiz(quiz)
+                        },
+                        [_vm._v("Edit")]
+                      ),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "button-primary",
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteQuiz(quiz)
+                            }
                           }
-                        }
-                      },
-                      [_vm._v("Delete")]
-                    )
+                        },
+                        [_vm._v("Delete")]
+                      )
+                    ])
                   ])
                 ])
               }),
@@ -584,18 +621,18 @@ if (false) {
 
 /***/ }),
 
-/***/ 198:
+/***/ 210:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Questions_vue__ = __webpack_require__(152);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_Questions_vue__ = __webpack_require__(156);
 /* empty harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_32ef292d_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_Questions_vue__ = __webpack_require__(200);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_32ef292d_hasScoped_true_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_Questions_vue__ = __webpack_require__(212);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(199)
+  __webpack_require__(211)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
@@ -642,14 +679,14 @@ if (false) {(function () {
 
 /***/ }),
 
-/***/ 199:
+/***/ 211:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 200:
+/***/ 212:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -674,18 +711,18 @@ if (false) {
 
 /***/ }),
 
-/***/ 201:
+/***/ 213:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_CreateQuiz_vue__ = __webpack_require__(153);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_CreateQuiz_vue__ = __webpack_require__(157);
 /* empty harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_750bc0c1_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_template_compiler_preprocessor_engine_pug_node_modules_vue_loader_lib_selector_type_template_index_0_CreateQuiz_vue__ = __webpack_require__(203);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_750bc0c1_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_template_compiler_preprocessor_engine_pug_node_modules_vue_loader_lib_selector_type_template_index_0_CreateQuiz_vue__ = __webpack_require__(215);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(202)
+  __webpack_require__(214)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
@@ -732,14 +769,14 @@ if (false) {(function () {
 
 /***/ }),
 
-/***/ 202:
+/***/ 214:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 203:
+/***/ 215:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -776,27 +813,23 @@ var render = function() {
         ]),
         _c("tr", { staticClass: "form-field" }, [
           _vm._m(1),
-          _c("td", [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
+          _c(
+            "td",
+            [
+              _c("ckeditor", {
+                staticClass: "editor",
+                attrs: { id: "quizDescription", editor: _vm.editor },
+                model: {
                   value: _vm.quizDescription,
+                  callback: function($$v) {
+                    _vm.quizDescription = $$v
+                  },
                   expression: "quizDescription"
                 }
-              ],
-              domProps: { value: _vm.quizDescription },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.quizDescription = $event.target.value
-                }
-              }
-            })
-          ])
+              })
+            ],
+            1
+          )
         ])
       ])
     ]),
@@ -844,18 +877,18 @@ if (false) {
 
 /***/ }),
 
-/***/ 204:
+/***/ 216:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_EditQuiz_vue__ = __webpack_require__(154);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_node_modules_vue_loader_lib_selector_type_script_index_0_EditQuiz_vue__ = __webpack_require__(159);
 /* empty harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_64da8dcf_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_template_compiler_preprocessor_engine_pug_node_modules_vue_loader_lib_selector_type_template_index_0_EditQuiz_vue__ = __webpack_require__(206);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_64da8dcf_hasScoped_false_buble_transforms_node_modules_vue_loader_lib_template_compiler_preprocessor_engine_pug_node_modules_vue_loader_lib_selector_type_template_index_0_EditQuiz_vue__ = __webpack_require__(218);
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(205)
+  __webpack_require__(217)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
@@ -902,14 +935,14 @@ if (false) {(function () {
 
 /***/ }),
 
-/***/ 205:
+/***/ 217:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
 
-/***/ 206:
+/***/ 218:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -946,27 +979,23 @@ var render = function() {
         ]),
         _c("tr", { staticClass: "form-field" }, [
           _vm._m(1),
-          _c("td", [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
+          _c(
+            "td",
+            [
+              _c("ckeditor", {
+                staticClass: "editor",
+                attrs: { id: "quizDescription", editor: _vm.editor },
+                model: {
                   value: _vm.quizDescription,
+                  callback: function($$v) {
+                    _vm.quizDescription = $$v
+                  },
                   expression: "quizDescription"
                 }
-              ],
-              domProps: { value: _vm.quizDescription },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.quizDescription = $event.target.value
-                }
-              }
-            })
-          ])
+              })
+            ],
+            1
+          )
         ])
       ])
     ]),
@@ -1014,7 +1043,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 207:
+/***/ 219:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1083,4 +1112,4 @@ module.exports = axiosInstance;
 
 /***/ })
 
-},[190]);
+},[202]);

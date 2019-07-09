@@ -22,11 +22,10 @@ class Admin {
         $capability = 'manage_options';
         $slug       = 'vue-app';
 
-        $hook = add_menu_page( __( 'Vue App', 'textdomain' ), __( 'Vue App', 'textdomain' ), $capability, $slug, [ $this, 'plugin_page' ], 'dashicons-text' );
+        $hook = add_menu_page( __( 'WP-Quiz-Plugin', 'textdomain' ), __( 'WP-Quiz-Plugin', 'textdomain' ), $capability, $slug, [ $this, 'plugin_page' ], 'dashicons-text' );
 
         if ( current_user_can( $capability ) ) {
             $submenu[ $slug ][] = array( __( 'Quiz', 'textdomain' ), $capability, 'admin.php?page=' . $slug . '#/quiz' );
-            $submenu[ $slug ][] = array( __( 'Create Quiz', 'textdomain' ), $capability, 'admin.php?page=' . $slug . '#/quiz/create' );
             $submenu[ $slug ][] = array( __( 'Questions', 'textdomain' ), $capability, 'admin.php?page=' . $slug . '#/questions' );
             $submenu[ $slug ][] = array( __( 'Categories', 'textdomain' ), $capability, 'admin.php?page=' . $slug . '#/categories' );
         }

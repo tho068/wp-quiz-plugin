@@ -13,8 +13,9 @@
           td {{ quiz.title }}
           td {{ quiz.description }}
           td
-            button(@click="edit(quiz)") Edit
-            button(@click="deleteQuiz(quiz)") Delete
+            div.button-group
+              button.button-primary(@click="edit(quiz)") Edit
+              button.button-primary(@click="deleteQuiz(quiz)") Delete
     div.tablenav.bottom
       button(@click="create").button-primary + Quiz
 </template>
@@ -46,8 +47,15 @@ export default {
         name: 'CreateQuiz'
       })
     },
-    deleteQuiz (quiz) {
-
+    async deleteQuiz (quiz) {
+      try {
+        await Axios.post('/admin/quiz/delete', {
+          id: quiz.id
+        })
+        this.loadQuizzes()
+      } catch (e) {
+        console.log(e)
+      }
     },
     edit (quiz) {
       this.$router.push({
@@ -66,5 +74,8 @@ export default {
   }
   .tablenav {
     margin-top: 25px;
+  }
+  .button-group button {
+    margin-right: 5px;
   }
 </style>

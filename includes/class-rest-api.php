@@ -43,6 +43,12 @@ class REST_API {
             'methods' => 'PUT',
             'callback' => [$this, 'update_quiz'],
         ));
+
+        /* Delete a quiz */
+        register_rest_route( 'wp-quiz-plugin', '/admin/quiz/delete', array(
+            'methods' => 'POST',
+            'callback' => [$this, 'delete_quiz'],
+        ));
     }
 
     /* Get quiz from db and return it to html */
@@ -189,6 +195,39 @@ class REST_API {
 
         return rest_ensure_response([
             'error' => 'Kunne ikke lagre quiz, noe gikk galt',
+            'status' => 500
+        ]);
+    }
+
+    /* Delete quiz */
+    public function delete_quiz ($data) {
+        global $wpdb;
+
+        if (is_user_logged_in() == false) {
+            return rest_ensure_response([
+                'error' => 'Ingen adgang',
+                'status' => 403
+            ]);
+        }
+
+        if(!isset($data['id'])) {
+            return rest_ensure_response([
+                'error' => 'Kan ikke slette quiz uten quiz id',
+                'status' => 500
+            ]);
+        }
+
+        $success = $wpdb->delete('wp_quiz_plugin_quiz', array( 'id' => $data['id']));
+
+        if ($success) {
+            return rest_ensure_response([
+                'message' => 'Quiz er slettet',
+                'status' => 200
+            ]);
+        }
+
+        return rest_ensure_response([
+            'error' => 'Kunne ikke slette quiz',
             'status' => 500
         ]);
     }

@@ -11,13 +11,18 @@
           th
             label Quiz Description
           td
-            input(v-model="quizDescription")
+            ckeditor.editor(
+              id="quizDescription"
+              :editor="editor" 
+              v-model="quizDescription" 
+            )
     p.submit
       button.button-primary(@click="update()") Save
 </template>
 
 <script>
 import Axios from "@/api";
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 export default {
   name: "EditQuiz",
@@ -26,7 +31,8 @@ export default {
     return {
       id: "",
       quizName: "",
-      quizDescription: ""
+      quizDescription: "",
+      editor: ClassicEditor
     };
   },
   mounted () {
