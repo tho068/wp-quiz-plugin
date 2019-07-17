@@ -1,5 +1,6 @@
 <template lang="pug">
   #quiz
+    h2 Quiz overview
     table.wp-list-table.widefat.fixed.striped.pages(v-if="quizzes != null")
       thead
         tr

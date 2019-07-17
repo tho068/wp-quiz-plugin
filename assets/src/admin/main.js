@@ -3,8 +3,10 @@ import App from './App.vue'
 import router from './router'
 import menuFix from './utils/admin-menu-fix'
 import CKEditor from '@ckeditor/ckeditor5-vue';
+import Notifications from 'vue-notification'
 
 Vue.use(CKEditor)
+Vue.use(Notifications)
 
 Vue.config.productionTip = false
 

@@ -9,6 +9,7 @@ class Admin {
     public function __construct() {
         add_action('wp_head', [$this, 'add_nonce']);
         add_action( 'admin_menu', [ $this, 'admin_menu' ] );
+        wp_enqueue_media();
     }
 
     /**
@@ -20,7 +21,7 @@ class Admin {
         global $submenu;
 
         $capability = 'manage_options';
-        $slug       = 'vue-app';
+        $slug       = 'wp-quiz-plugin';
 
         $hook = add_menu_page( __( 'WP-Quiz-Plugin', 'textdomain' ), __( 'WP-Quiz-Plugin', 'textdomain' ), $capability, $slug, [ $this, 'plugin_page' ], 'dashicons-text' );
 
